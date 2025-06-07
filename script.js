@@ -5,13 +5,21 @@ function clearPapers() {
 function searchAndDisplayPapers(keyword) {
   clearPapers();
 
-  const filtered = papers.filter((entry) =>
-    (entry.title + entry.text)
-      .toLowerCase()
-      .includes(keyword.toLowerCase())
-  );
+  const filtered = papers
+    .filter((entry) => entry.release === "yes")  // 🔥 공개된 메모만 대상으로!
+    .filter((entry) =>
+      (entry.title + entry.text)
+        .toLowerCase()
+        .includes(keyword.toLowerCase())
+    );
 
-  addPapers(filtered); // 검색 결과만 보여주기
+  if (filtered.length === 0) {
+    const container = document.getElementById("container");
+    container.innerHTML = `<div style="text-align:center; font-size:18px; margin-top:20px;">검색 결과가 없습니다.</div>`;
+    return;
+  }
+
+  addPapers(filtered);
 }
 function addPapers(data = papers) {
   const container = document.getElementById("container");
