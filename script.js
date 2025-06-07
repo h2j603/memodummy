@@ -1,16 +1,30 @@
-function addPapers() {
+function clearPapers() {
+  const container = document.getElementById("container");
+  container.innerHTML = "";
+}
+function searchAndDisplayPapers(keyword) {
+  clearPapers();
+
+  const filtered = papers.filter((entry) =>
+    (entry.title + entry.text)
+      .toLowerCase()
+      .includes(keyword.toLowerCase())
+  );
+
+  addPapers(filtered); // 검색 결과만 보여주기
+}
+function addPapers(data = papers) {
   const container = document.getElementById("container");
   let totalHeight = 0;
   const isMobile = window.innerWidth <= 600;
 
-  papers.forEach((entry, index) => {
+  data.forEach((entry, index) => {
     const paper = document.createElement("div");
     paper.classList.add("paper");
     if (entry.release === "no") {
       paper.classList.add("unreleasedPaper");
     }
 
-    // 각도 제한: 모바일은 -8 ~ 8도, 데스크탑은 -25 ~ 0도
     const maxRotation = isMobile ? -8 : -25;
     const minRotation = isMobile ? 8 : 0;
     let randomRotation = (
@@ -18,8 +32,8 @@ function addPapers() {
       maxRotation
     ).toFixed(2);
 
-    let bottomPosition = totalHeight + 50; //종이 아래쪽 간격
-    totalHeight += 50; // 종이 사이의 간격
+    let bottomPosition = totalHeight + 50;
+    totalHeight += 50;
 
     paper.style.setProperty("--rotation", `${randomRotation}deg`);
     paper.style.transform = `translateX(-50%) rotate(${randomRotation}deg)`;
@@ -27,8 +41,8 @@ function addPapers() {
     paper.style.zIndex = index;
 
     let textClass = entry.release === "no" ? "unreleased" : "";
-    paper.innerHTML = `<div class="dateAndtitle">${entry.date}   &nbsp;&nbsp;&nbsp;&nbsp;${entry.title}</div>
-    <p class="${textClass}">${entry.text}</p>`;
+    paper.innerHTML = `<div class="dateAndtitle">${entry.date} &nbsp;&nbsp;&nbsp;&nbsp;${entry.title}</div>
+      <p class="${textClass}">${entry.text}</p>`;
 
     if (entry.release === "yes") {
       paper.classList.add("releasedPaper");
@@ -55,6 +69,7 @@ function addPapers() {
   container.style.height = `${totalHeight + 50}px`;
 }
 
+
 function openModal(date, title, text) {
   document.getElementById("modal-date").innerText = date;
   document.getElementById("modal-title").innerText = title;
@@ -69,3 +84,7 @@ document.getElementById("modal-overlay").addEventListener("click", () => {
 });
 
 window.onload = addPapers;
+document.getElementById("searchInput").addEventListener("input", (e) => {
+  searchAndDisplayPapers(e.target.value);
+});
+
