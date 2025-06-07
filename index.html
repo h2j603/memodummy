@@ -4,6 +4,11 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="./style.css?v=1.0" />
+    <link rel="preconnect" href="https://hmolhy4qpa.execute-api.ap-northeast-2.amazonaws.com">
+    <!-- HEAD 안에 아래 코드 넣기 -->
+    <link href="https://fonts.googleapis.com/css2?family=Xanh+Mono&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://hmolhy4qpa.execute-api.ap-northeast-2.amazonaws.com/v1/api/css/drop_fontstream_css/?sid=gAAAAABoRFv_SwYF8cl-XfKK-3i8emRHKHVdgmekvoXa4Kyt5H-xV5xxSS_5YS917vJxCZ95lomKmoWkcjthwc2IMwjXxI5zHSSg3BDQvN9rr5b8kPWLkNy1oJnxSds2wwZDSMNpnQDeP9GsFdB2cN-vfHhcIHkr22S5cRzDlZ3JAL1PMY3Xk2e_gqE4BnOj00EsIgVQhXILsVtJHTZ03Cg3yaz95FylqxAQvDdvSsry2ejfR4pzeb_c_ixurMPmhShSidHNASLM" charset="utf-8" referrerpolicy="origin">
+
     <link rel="icon" href="/favicon.png" type="image/png" />
     <meta property="og:image" content="/thumbnail.png" />
     <meta property="og:image:type" content="image/jpeg" />
@@ -14,11 +19,11 @@
     <!-- 컨테이너 위쪽의 빈 공간-->
     <div id="space"></div>
     <!-- 검색창 추가 -->
-<div id="search-bar" style="position: fixed; top: 10px; z-index: 999;">
+<div id="search-bar" style="position: fixed; top: 30px; z-index: 999;">
   <input
     type="text"
     id="searchInput"
-    placeholder="검색어를 입력하세요"
+    placeholder="What are you looking for?"
     style="padding: 8px; font-size: 14px; width: 200px;"
   />
 </div>
@@ -30,19 +35,14 @@
 
     <!-- 각 메모를 클릭했을 때 열리는 창 -->
     <div class="modal" id="modal">
-  <p id="modal-text"></p>
+  <div id="modal-text"></div>
   <h3 id="modal-date"></h3>
   <h3 id="modal-title"></h3>
   <button id="next-button" style="position: absolute; right: 20px; bottom: 20px;">다음</button>
 </div>
     <div class="modal-overlay" id="modal-overlay"></div>
-    <div class="modal" id="modal">
-      <p id="modal-text"></p>
-      <h3 id="modal-date"></h3>
-      <h3 id="modal-title"></h3>
-    </div>
-
     <script src="paper.js"></script>
     <script src="script.js"></script>
   </body>
 </html>
+
