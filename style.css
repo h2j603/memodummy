@@ -1,0 +1,164 @@
+@font-face {
+    font-family: 'HakgyoansimBareonbatangB';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2307-2@1.0/HakgyoansimBareonbatangB.woff2') format('woff2');
+    font-weight: 700;
+    font-style: normal;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  background: #d9d9d9;
+background: linear-gradient(0deg, rgba(217, 217, 217, 1) 0%, rgba(0, 160, 235, 1) 50%, rgba(217, 217, 217, 1) 100%);
+  font-family: "HakgyoansimBareonbatangB", serif;
+  overflow-x: hidden;
+}
+#space {
+  width: 100vw;
+  height: 20vh;
+  position: relative;
+}
+#container {
+  position: absolute;
+  width: 100vw;
+  padding-bottom: 150px;
+  top: 100vh;
+  overflow-x: visible;
+}
+h1 {
+  font-weight: normal;
+  font-size: 15px;
+  margin-top: 50px;
+  left: 50%;
+  max-width: 800px;
+  position: fixed;
+  z-index: 99;
+  bottom: 0;
+  text-align: center;
+  transform: translate(-50%, 0px);
+  margin: 10px 0;
+}
+.paper {
+  position: absolute;
+  left: 50%;
+  width: 100%;
+  max-width: 800px;
+  min-height: 600px;
+  background: white;
+  box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.2);
+  transform-origin: center;
+  padding: 15px;
+  font-size: 14px;
+  line-height: 1.5;
+  overflow: hidden;
+  border-radius: 0px;
+  word-wrap: break-word;
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+.paper:hover {
+  transform: translateX(-50%) scale(1.05);
+}
+.paper.released:hover {
+  cursor: pointer;
+  z-index: 99999999999;
+}
+.dateAndtitle {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  padding: 0 15px;
+  width: 100%;
+  font-size: 15px;
+  transform: translateX(-50%);
+  background-color: DodgerBlue
+}
+.releasedPaper {
+  background-color: rgb(240, 241, 232);
+  background-color: DodgerBlue
+}
+.unreleased {
+  color: black;
+
+}
+.unreleasedPaper {
+  pointer-events: none;
+  background-color: DodgerBlue
+}
+.unreleasedPaper .date-title {
+  color: black;
+}
+.modal {
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: DodgerBlue;
+  padding: 20px;
+  box-shadow: 0px 0px 10px DodgerBlue;
+  z-index: 100;
+  width: 92vw;
+  height: 92vh;
+  line-height: 1.6;
+}
+.modal-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 99;
+}
+#modal-title,
+#modal-date {
+  font-size: 15px;
+  font-weight: normal;
+  position: absolute;
+  bottom: 20px;
+  padding-left: 150px;
+}
+
+#modal-date {
+  padding-left: 0px;
+}
+
+.credit {
+  bottom: 0;
+  position: absolute;
+  z-index: 9999;
+}
+
+@media only screen and (max-width: 1200px) {
+  .paper {
+    max-width: 700px;
+    min-height: 600px;
+  }
+}
+
+@media only screen and (max-width: 900px) {
+  .paper {
+    max-width: 500px;
+    min-height: 600px;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  #container {
+    top: 50vh;
+  }
+  .paper {
+    max-width: 300px;
+    min-height: 400px;
+  }
+  .modal {
+    width: 85vw;
+    height: 75vh;
+  }
+}

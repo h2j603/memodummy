@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./style.css?v=1.0" />
+    <link rel="icon" href="/favicon.png" type="image/png" />
+    <meta property="og:image" content="/thumbnail.png" />
+    <meta property="og:image:type" content="image/jpeg" />
+    <meta property="og:description" content="memodummy/blank.html" />
+    <title>memodummy/blank.html</title>
+  </head>
+  <body>
+    <!-- 컨테이너 위쪽의 빈 공간-->
+    <div id="space"></div>
+
+    <!-- 메모 더미의 컨테이너 -->
+    <div id="container"></div>
+    <h1>@hyuaoy의 Idea Dump...</h1>
+
+    <!-- 각 메모를 클릭했을 때 열리는 창 -->
+    <div class="modal-overlay" id="modal-overlay"></div>
+    <div class="modal" id="modal">
+      <p id="modal-text"></p>
+      <h3 id="modal-date"></h3>
+      <h3 id="modal-title"></h3>
+    </div>
+
+    <script src="paper.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>
