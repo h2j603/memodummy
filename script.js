@@ -1,25 +1,25 @@
+let searchResults = [];
+let currentResultIndex = 0;
 function clearPapers() {
   const container = document.getElementById("container");
   container.innerHTML = "";
 }
 function searchAndDisplayPapers(keyword) {
-  clearPapers();
-
-  const filtered = papers
-    .filter((entry) => entry.release === "yes")  // 🔥 공개된 메모만 대상으로!
+  searchResults = papers
+    .filter((entry) => entry.release === "yes")
     .filter((entry) =>
       (entry.title + entry.text)
         .toLowerCase()
         .includes(keyword.toLowerCase())
     );
 
-  if (filtered.length === 0) {
-    const container = document.getElementById("container");
-    container.innerHTML = `<div style="text-align:center; font-size:18px; margin-top:20px;">검색 결과가 없습니다.</div>`;
-    return;
+  if (searchResults.length > 0) {
+    currentResultIndex = 0;
+    const first = searchResults[0];
+    openModal(first.date, first.title, first.text);
+  } else {
+    alert("검색 결과가 없습니다.");
   }
-
-  addPapers(filtered);
 }
 function addPapers(data = papers) {
   const container = document.getElementById("container");
@@ -92,7 +92,20 @@ document.getElementById("modal-overlay").addEventListener("click", () => {
 });
 
 window.onload = addPapers;
-document.getElementById("searchInput").addEventListener("input", (e) => {
-  searchAndDisplayPapers(e.target.value);
+document.getElementById("searchInput").addEventListener("keydown", (e) => {
+  if (e.key === "Enter") {
+    e.preventDefault();
+    searchAndDisplayPapers(e.target.value);
+  }
 });
-
+document.getElementById("next-button").addEventListener("click", () => {
+  currentResultIndex++;
+  if (currentResultIndex >= searchResults.length) {
+    // 마지막이면 닫기
+    document.getElementById("modal").style.display = "none";
+    document.getElementById("modal-overlay").style.display = "none";
+  } else {
+    const next = searchResults[currentResultIndex];
+    openModal(next.date, next.title, next.text);
+  }
+});
