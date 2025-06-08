@@ -1,9 +1,19 @@
+/* Add Google Fonts link at the top */
+@import url('https://fonts.googleapis.com/css2?family=Xanh+Mono:ital@0;1&display=swap');
+
 @font-face {
   font-family: 'BookkMyungjoOnlyHangul';
   src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2302@1.0/BookkMyungjo-Bd.woff2') format('woff2');
   font-weight: 700;
   font-style: normal;
-  unicode-range: U+AC00–D7A3, U+1100–11FF, U+3130–318F; /* 한글, 자모 */
+  unicode-range: U+AC00-D7A3, U+1100-11FF, U+3130-318F, U+0030-0039; /* 한글, 자모, 숫자 */
+}
+
+@font-face {
+  font-family: 'EB Garamond';
+  font-style: italic;
+  font-weight: 600;
+  unicode-range: U+0041-005A, U+0061-007A; /* Only Latin letters */
 }
 
 * {
@@ -12,27 +22,39 @@
   box-sizing: border-box;
 }
 body {
-  font-family: 'BookkMyungjoOnlyHangul', 'Xanh Mono', monospace;
+  font-family: 'BookkMyungjoOnlyHangul', 'EB Garamond', serif;
   display: flex;
   justify-content: center;
   align-items: center;
-  flex-direction: column;
-  background-color: #f0f0f0;
-  background-image: radial-gradient(#ccc 1px, transparent 1px);
-  background-size: 20px 20px;
-}
-
+  min-height: 100vh;
+  margin: 0;
+  background-color: #f5f7fa;  /* Light blue-gray base color */
+  background-image: radial-gradient(
+    rgba(0, 0, 255, 0.08) 1px,  /* Reduced opacity from 0.15 to 0.08 */
+    transparent 1px
+  );
+  background-size: 30px 30px;  /* Keeping the same spacing */
+  position: relative;
   overflow-x: hidden;
 }
 
-/* 영문용 클래스는 폰트만! */
-.english {
-  font-family: 'Xanh Mono', monospace !important;
-  font-style: normal;
-  font-weight: 400;
+/* Remove the noise texture since we're using dots */
+body::before {
+  display: none;
 }
 
+/* Ensure content stays above the noise texture */
+#container, .custom-scrollbar {
+  position: relative;
+  z-index: 2;
+}
 
+/* English class for Latin letters only */
+.english {
+  font-family: 'EB Garamond', serif !important;
+  font-weight: 600;
+  font-style: italic;
+}
 
 #space {
   width: 100vw;
@@ -43,10 +65,20 @@ body {
   position: absolute;
   width: 60vw;
   padding-bottom: 150px;
-  top: 100vh;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
   overflow-x: visible;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  will-change: height;
+  overscroll-behavior: none;
+  -webkit-overflow-scrolling: none;
 }
 h1 {
+  font-family: 'EB Garamond', serif;
   font-weight: normal;
   font-size: 15px;
   margin-top: 50px;
@@ -68,26 +100,39 @@ h1 {
 }
 
 .paper {
-  transition: all 0.6s ease;
-  margin-bottom: 80px;
   position: absolute;
+  transition: transform 0.3s ease;
+  margin-bottom: 80px;
   left: 50%;
   width: 100%;
   max-width: 800px;
   min-height: 600px;
-  background: white;
-  box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.2);
+  background: rgba(0, 0, 255, 0.8);  /* Changed to rgba with 0.8 opacity */
+  box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.1);  /* Reduced shadow opacity from 0.2 to 0.1 */
   transform-origin: center;
   padding: 15px;
   font-size: 14px;
   line-height: 1.5;
   overflow: hidden;
-  border-radius: 3px;
+  border-radius: 0;
   word-wrap: break-word;
-  transition: transform 0.2s ease, background 0.2s ease;
+  will-change: transform;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  border: none;
 }
+
+/* Remove the previous pseudo-element styles */
+.paper::before {
+  display: none;
+}
+
+.paper > * {
+  position: relative;
+}
+
 .paper:hover {
-  transform: translateX(-50%) scale(1.05) translateY(-5px);
+  transform: translate(-50%, var(--paper-y, 0px)) scale(1.05) translateY(-5px) rotate(var(--rotation));
   box-shadow: 0 12px 20px rgba(0, 0, 0, 0.2);
 }
 
@@ -101,13 +146,13 @@ h1 {
   left: 50%;
   padding: 0 15px;
   width: 100%;
-  font-size: 15px;
+  font-size: 14px;
   transform: translateX(-50%);
-  background-color: DodgerBlue
+  background-color: rgba(0, 0, 255, 0.8);  /* Changed to rgba with 0.8 opacity */
 }
 .releasedPaper {
   background-color: rgb(240, 241, 232);
-  background-color: DodgerBlue
+  background-color: Blue;  /* Changed from DodgerBlue */
 }
 .unreleased {
   color: black;
@@ -115,7 +160,7 @@ h1 {
 }
 .unreleasedPaper {
   pointer-events: none;
-  background-color: DodgerBlue
+  background-color: Blue;  /* Changed from DodgerBlue */
 }
 .unreleasedPaper .date-title {
   color: black;
@@ -126,14 +171,15 @@ h1 {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background: DodgerBlue;
+  background: Blue;  /* Changed from DodgerBlue */
   padding: 20px;
-  box-shadow: 0px 0px 10px DodgerBlue;
+  box-shadow: 0px 0px 10px Blue;  /* Changed from DodgerBlue */
   z-index: 100;
   width: 92vw;
   height: 92vh;
   line-height: 1.6;
-  overflow: auto;  /* ✅ 스크롤 가능하게 */
+  overflow: auto;
+  cursor: default;
 }
 
 #modal-text {
@@ -143,7 +189,6 @@ h1 {
   line-height: 1.6;
 }
 
-}
 .modal-overlay {
   display: none;
   position: fixed;
@@ -151,11 +196,15 @@ h1 {
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: 99;
+  background-color: rgba(255, 255, 255, 0.1); /* Very light white overlay */
+  backdrop-filter: blur(8px); /* Add blur effect */
+  -webkit-backdrop-filter: blur(8px); /* For Safari support */
+  z-index: 98;
+  cursor: pointer;
 }
 #modal-title,
 #modal-date {
-  font-size: 15px;
+  font-size: 14px;
   font-weight: normal;
   position: absolute;
   bottom: 20px;
@@ -171,7 +220,6 @@ h1 {
   position: absolute;
   z-index: 9999;
 }
-
 
 @media only screen and (max-width: 1200px) {
   .paper {
@@ -189,7 +237,8 @@ h1 {
 
 @media only screen and (max-width: 600px) {
   #container {
-    top: 50vh;
+    top: 0;
+    width: 90vw;
   }
   .paper {
     max-width: 300px;
@@ -200,10 +249,6 @@ h1 {
     height: 85vh;
     padding-bottom: 60px;
   }
-}
-#modal-text {
-  white-space: pre-wrap;
-  line-height: 1.6;
 }
 #search-bar {
   position: fixed;
@@ -216,48 +261,146 @@ h1 {
 #searchInput {
   padding: 10px 16px;
   font-size: 14px;
-  font-family: 'BookkMyungjo-Bd', serif;
+  font-family: 'EB Garamond', serif;
   background-color: #f0f0f0;
   border: none;
   border-radius: 8px;
-  box-shadow: 0 4px 10px rgba(30, 144, 255, 0.4); /* 기본 그림자 */
+  box-shadow: 0 4px 10px rgba(0, 0, 255, 0.4);
   width: 220px;
   outline: none;
-  text-align: center; /* 텍스트 가운데 정렬 */
-  transition: box-shadow 0.3s ease;
+  text-align: center;
 }
 
-#searchInput:hover,
-#searchInput:focus {
-  box-shadow: 0 4px 20px rgba(30, 144, 255, 30); /* hover 시 더 강한 그림자 */
-}
 #next-button {
-  font-family: 'BookkMyungjo-Bd', serif;
-  background-color: #f0f0f0; /* 밝은 회색 배경 */
+  font-family: 'EB Garamond', serif;
+  background-color: white;
   border: none;
-  box-shadow: 0 0 8px white;
-  color: black;
-  font-size: 14px;
-  padding: 5px 10px;
-  border-radius: 3px;
+  padding: 10px 20px;
+  border-radius: 8px;
   cursor: pointer;
-  position: absolute;
-  right: 20px;
-  bottom: 20px;
-  transition: box-shadow 0.3s ease, transform 0.2s ease;
+  box-shadow: 0 4px 10px rgba(0, 0, 255, 0.4);
+  transition: all 0.3s ease;
+  margin-left: 10px;
+  font-size: 14px;
 }
 
-#next-button:hover {
-  box-shadow: 0 0 14px white;
-  transform: scale(1.03);
+.custom-scrollbar {
+  position: fixed;
+  left: 30px;  /* Position on left side */
+  top: 50%;
+  transform: translateY(-50%) rotate(0.5deg);
+  width: 16px;  /* Slim width */
+  height: 400px;  /* Taller height */
+  background-color: #f8f8f8;
+  border-radius: 8px;
+  cursor: pointer;
+  z-index: 1000;
+  box-shadow: 0px 0px 12px rgba(0, 0, 255, 0.35);
+  border: 1px solid rgba(0, 0, 255, 0.15);
+  background-image: linear-gradient(to bottom, #fff, #f8f8f8);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
-@media (max-width: 600px) {
-  .paper {
-    margin-bottom: 60px;
+
+.custom-scrollbar:hover {
+  transform: translateY(-50%) rotate(0.3deg);
+  box-shadow: 0px 4px 12px rgba(0, 0, 255, 0.45);
+}
+
+.scrollbar-handle {
+  position: absolute;
+  width: 100%;
+  height: 80px;  /* Taller handle */
+  background-color: #fff;
+  border-radius: 6px;
+  cursor: grab;
+  transition: all 0.2s ease;
+  will-change: transform, top;
+  touch-action: none;
+  box-shadow: 0px 2px 6px rgba(0, 0, 255, 0.3);
+  border: 1px solid rgba(0, 0, 255, 0.12);
+  background-image: linear-gradient(to bottom, #fff, #fafafa);
+  transform: rotate(-0.3deg);
+}
+
+.scrollbar-handle:hover {
+  background-image: linear-gradient(to bottom, dodgerblue, rgb(0, 120, 215));
+  box-shadow: 0px 4px 8px rgba(0, 0, 255, 0.4);
+  color: white;
+}
+
+.scrollbar-handle:active {
+  cursor: grabbing;
+  background-image: linear-gradient(to bottom, rgb(0, 120, 215), dodgerblue);
+  box-shadow: 0px 2px 4px rgba(0, 0, 255, 0.35);
+  transform: rotate(0deg) scale(0.98);
+}
+
+/* Add subtle paper texture to the track */
+.custom-scrollbar::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: 
+    linear-gradient(45deg, rgba(0,0,0,0.01) 25%, transparent 25%),
+    linear-gradient(-45deg, rgba(0,0,0,0.01) 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, rgba(0,0,0,0.01) 75%),
+    linear-gradient(-45deg, transparent 75%, rgba(0,0,0,0.01) 75%);
+  background-size: 10px 10px;
+  background-position: 0 0, 0 5px, 5px -5px, -5px 0px;
+  border-radius: 8px;
+  pointer-events: none;
+}
+
+/* Add subtle lines to the handle */
+.scrollbar-handle::before {
+  content: '';
+  position: absolute;
+  top: 5px;
+  left: 3px;
+  right: 3px;
+  bottom: 5px;
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent,
+    transparent 15px,
+    rgba(0,0,0,0.02) 15px,
+    rgba(0,0,0,0.02) 16px
+  );
+  border-radius: 4px;
+  pointer-events: none;
+}
+
+/* Mobile adjustments */
+@media only screen and (max-width: 600px) {
+  .custom-scrollbar {
+    left: 20px;  /* Adjusted for mobile */
+    width: 14px;
+    height: 300px;
+  }
+  
+  .scrollbar-handle {
+    height: 60px;
+  }
+
+  #searchInput {
+    width: 180px;  /* Slightly smaller on mobile */
+    font-size: 13px;  /* Slightly smaller font on mobile */
+    font-family: 'EB Garamond', serif;  /* Ensure font is set for mobile */
+  }
+
+  #next-button {
+    font-size: 13px;  /* Slightly smaller font on mobile */
+    padding: 8px 16px;  /* Slightly smaller padding on mobile */
+    font-family: 'EB Garamond', serif;  /* Ensure font is set for mobile */
   }
 }
-@media (min-width: 601px) {
-  .paper {
-    margin-bottom: 100px;
-  }
+
+/* Numbers class for numbers */
+.numbers {
+  font-family: 'BookkMyungjoOnlyHangul', serif !important;
+  font-weight: 700;
+  font-style: normal;
 }
