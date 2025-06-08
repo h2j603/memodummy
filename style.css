@@ -1,0 +1,552 @@
+/* Add Google Fonts link at the top */
+@import url('https://fonts.googleapis.com/css2?family=Xanh+Mono:ital@0;1&display=swap');
+
+/* Remove SD Jeongche font import since it's in HTML */
+/* Remove SD Jeongche @font-face since it's loaded via link tag */
+
+@font-face {
+  font-family: 'BookkMyungjoOnlyHangul';
+  src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2302@1.0/BookkMyungjo-Bd.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap; /* Optimize font loading */
+  unicode-range: U+AC00-D7A3, U+1100-11FF, U+3130-318F, U+0030-0039; /* 한글, 자모, 숫자 */
+}
+
+@font-face {
+  font-family: 'EB Garamond';
+  font-style: italic;
+  font-weight: 600;
+  font-display: swap;
+  src: local('EB Garamond Italic'),
+       local('EBGaramond-Italic'),
+       url('https://fonts.gstatic.com/s/ebgaramond/v27/slsoQx6eNqo7Gq0_X0mxIIiQAGXJw.woff2') format('woff2');
+  unicode-range: U+0041-005A, U+0061-007A; /* Only Latin letters */
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  cursor: none !important; /* Hide default cursor everywhere */
+}
+
+body {
+  font-family: 'BookkMyungjoOnlyHangul', 'EB Garamond', serif;
+  font-weight: 400;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  margin: 0;
+  background-color: WhiteSmoke;  /* Changed to WhiteSmoke */
+  background-image: radial-gradient(
+    rgba(0, 0, 0, 0.1) 1px,  /* Adjusted dot color to be more subtle */
+    transparent 1px
+  );
+  background-size: 20px 20px;  /* Made dots slightly closer together */
+  position: relative;
+  overflow-x: hidden;
+  cursor: none; /* Hide default cursor */
+}
+
+/* Remove the noise texture since we're using dots */
+body::before {
+  display: none;
+}
+
+/* Ensure content stays above the noise texture */
+#container, .custom-scrollbar {
+  position: relative;
+  z-index: 2;
+}
+
+/* English class for Latin letters only */
+.english {
+  font-family: 'EB Garamond', serif !important;
+  font-weight: 600 !important;
+  font-style: italic !important;
+}
+
+#space {
+  width: 100vw;
+  height: 20vh;
+  position: relative;
+}
+#container {
+  position: absolute;
+  width: 60vw;
+  padding-bottom: 150px;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  overflow-x: visible;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  will-change: height;
+  overscroll-behavior: none;
+  -webkit-overflow-scrolling: none;
+}
+h1 {
+  font-family: 'EB Garamond', serif;
+  font-weight: normal;
+  font-size: 15px;
+  margin-top: 50px;
+  left: 50%;
+  max-width: 800px;
+  position: fixed;
+  z-index: 99;
+  bottom: 0;
+  text-align: center;
+  transform: translate(-50%, 0px);
+  margin: 10px 0;
+}
+.highlight {
+  border: 1px solid currentColor;  /* 글자색과 동일한 테두리 */
+  padding: 0.5px 1.5px;                /* 테두리와 글자 간 여백 */
+  border-radius: 2px;              /* 모서리 살짝 둥글게 (선택) */
+  background-color: transparent;   /* 배경 없음 */
+  box-decoration-break: clone;     /* 줄바꿈 시 테두리 유지 */
+}
+
+.paper {
+  position: absolute;
+  transition: transform 0.3s ease;
+  margin-bottom: 80px;
+  left: 50%;
+  width: 100%;
+  max-width: 800px;
+  min-height: 600px;
+  background: rgba(0, 0, 255, 0.8);  /* Changed to rgba with 0.8 opacity */
+  box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.1);  /* Reduced shadow opacity from 0.2 to 0.1 */
+  transform-origin: center;
+  padding: 15px;
+  font-size: 14px;
+  line-height: 1.5;
+  overflow: hidden;
+  border-radius: 0;
+  word-wrap: break-word;
+  will-change: transform;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  border: none;
+}
+
+/* Remove the previous pseudo-element styles */
+.paper::before {
+  display: none;
+}
+
+.paper > * {
+  position: relative;
+}
+
+.paper:hover {
+  transform: translate(-50%, var(--paper-y, 0px)) scale(1.05) translateY(-5px) rotate(var(--rotation));
+  box-shadow: 0 12px 20px rgba(0, 0, 0, 0.2);
+}
+
+.paper.released:hover {
+  cursor: pointer;
+  z-index: 99999999999;
+}
+.dateAndtitle {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  padding: 0 15px;
+  width: 100%;
+  font-size: 14px;
+  transform: translateX(-50%);
+  background-color: rgba(0, 0, 255, 0.8);  /* Changed to rgba with 0.8 opacity */
+}
+.releasedPaper {
+  background-color: rgb(240, 241, 232);
+  background-color: Blue;  /* Changed from DodgerBlue */
+}
+.unreleased {
+  color: black;
+
+}
+.unreleasedPaper {
+  pointer-events: none;
+  background-color: Blue;  /* Changed from DodgerBlue */
+}
+.unreleasedPaper .date-title {
+  color: black;
+}
+.modal {
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: Blue;
+  padding: 20px;
+  box-shadow: 0px 0px 10px Blue;
+  z-index: 1000; /* Increased z-index to ensure it's above search bar */
+  width: 92vw;
+  height: 92vh;
+  line-height: 1.6;
+  overflow: auto;
+  cursor: default;
+  -webkit-overflow-scrolling: touch; /* Enable smooth scrolling on iOS */
+}
+
+#modal-text {
+  max-height: 75vh; /* ✅ 텍스트 영역 높이 제한 */
+  overflow-y: auto;
+  white-space: pre-wrap;
+  line-height: 1.6;
+}
+
+.modal-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 999; /* Just below modal but above search bar */
+  cursor: pointer;
+}
+#modal-title,
+#modal-date {
+  font-size: 14px;
+  font-weight: normal;
+  position: absolute;
+  bottom: 20px;
+  padding-left: 150px;
+}
+
+#modal-date {
+  padding-left: 0px;
+}
+
+.credit {
+  bottom: 0;
+  position: absolute;
+  z-index: 9999;
+}
+
+@media only screen and (max-width: 1200px) {
+  .paper {
+    max-width: 700px;
+    min-height: 600px;
+  }
+}
+
+@media only screen and (max-width: 900px) {
+  .paper {
+    max-width: 500px;
+    min-height: 600px;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  #container {
+    top: 0;
+    width: 90vw;
+  }
+  .paper {
+    max-width: 300px;
+    min-height: 400px;
+  }
+  .modal {
+    width: 85vw;
+    height: 85vh;
+    padding-bottom: 60px;
+    z-index: 1000;
+  }
+  
+  #searchInput,
+  #next-button {
+    z-index: 90; /* Keep search elements below modal */
+  }
+  
+  .custom-scrollbar {
+    z-index: 1001; /* Keep scrollbar above modal */
+  }
+}
+
+/* Common font styles for inputs and buttons */
+.font-stack {
+  font-family: 'BookkMyungjoOnlyHangul', 'EB Garamond', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-feature-settings: "kern" 1, "liga" 1, "calt" 1;
+  text-rendering: optimizeLegibility;
+}
+
+/* Search bar styles */
+#search-bar {
+  position: fixed;
+  top: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 100001;
+  background: rgba(255, 255, 255, 0.9);
+  padding: 8px 15px;
+  border-radius: 20px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(0, 0, 255, 0.1);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+}
+
+#searchInput {
+  font-family: 'BookkMyungjoOnlyHangul', 'EB Garamond', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  font-weight: 400;
+  width: 200px;
+  padding: 4px 8px;
+  border: none;
+  background: transparent;
+  color: black;
+  font-size: 14px;
+  line-height: 1.5;
+  outline: none;
+  position: relative;
+  z-index: 100001;
+  cursor: text !important;
+  text-align: center;
+  -webkit-appearance: none;
+  appearance: none;
+  border-radius: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#searchInput::placeholder {
+  color: rgba(0, 0, 0, 0.4);
+  font-style: italic;
+  text-align: center;
+  font-family: inherit; /* Ensure placeholder uses the same font */
+}
+
+#search-bar:hover {
+  box-shadow: 0 4px 15px rgba(0, 0, 255, 0.15);
+  border-color: rgba(0, 0, 255, 0.2);
+}
+
+#searchInput:focus {
+  outline: none;
+}
+
+#search-bar:focus-within {
+  box-shadow: 0 4px 15px rgba(0, 0, 255, 0.2);
+  border-color: rgba(0, 0, 255, 0.3);
+}
+
+#next-button {
+  font-family: 'BookkMyungjoOnlyHangul', 'EB Garamond', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  font-weight: 400;
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(0, 0, 255, 0.2);
+  cursor: pointer;
+  font-size: 14px;
+  line-height: 1.5;
+  z-index: 100001;
+  -webkit-appearance: none;
+  appearance: none;
+  padding: 8px 16px;
+  border-radius: 20px;
+  transition: all 0.2s ease;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  color: black;
+}
+
+#next-button:hover {
+  background: rgba(255, 255, 255, 0.95);
+  border-color: rgba(0, 0, 255, 0.3);
+  box-shadow: 0 4px 15px rgba(0, 0, 255, 0.15);
+  transform: translateY(-1px);
+}
+
+#next-button:active {
+  transform: translateY(1px);
+  box-shadow: 0 2px 5px rgba(0, 0, 255, 0.1);
+}
+
+/* iOS-specific adjustments */
+@supports (-webkit-touch-callout: none) {
+  #searchInput,
+  #next-button {
+    font-size: 16px; /* Prevent zoom on focus in iOS */
+  }
+  
+  #search-bar {
+    -webkit-transform: translateX(-50%) translateZ(0); /* Force hardware acceleration */
+    transform: translateX(-50%) translateZ(0);
+  }
+}
+
+/* Mobile adjustments */
+@media only screen and (max-width: 600px) {
+  #search-bar {
+    top: 20px;
+    width: 90%;
+    max-width: 300px;
+  }
+  
+  #searchInput {
+    width: 100%;
+    font-size: 16px; /* Larger font size for mobile */
+  }
+  
+  #next-button {
+    font-size: 16px;
+    bottom: 15px;
+    right: 15px;
+  }
+}
+
+/* Scrollbar styles */
+.custom-scrollbar {
+  position: fixed;
+  left: 30px;
+  top: 50%;
+  transform: translateY(-50%) rotate(0.5deg);
+  width: 16px;
+  height: 400px;
+  background-color: #f8f8f8;
+  border-radius: 8px;
+  z-index: 100000;
+  box-shadow: 0px 0px 12px rgba(0, 0, 255, 0.35);
+  border: 1px solid rgba(0, 0, 255, 0.15);
+  background-image: linear-gradient(to bottom, #fff, #f8f8f8);
+  transition: box-shadow 0.2s ease;
+  pointer-events: auto;
+  will-change: transform;
+  backface-visibility: hidden;
+}
+
+.custom-scrollbar:hover {
+  box-shadow: 0px 4px 12px rgba(0, 0, 255, 0.45);
+}
+
+.scrollbar-handle {
+  position: absolute;
+  width: 100%;
+  height: 80px;
+  background-color: blue;
+  border-radius: 6px;
+  transition: background-color 0.2s ease;
+  will-change: transform, top;
+  touch-action: none;
+  box-shadow: 0px 2px 6px rgba(0, 0, 255, 0.3);
+  border: 1px solid rgba(0, 0, 255, 0.12);
+  transform: rotate(-0.3deg);
+  pointer-events: auto;
+  backface-visibility: hidden;
+}
+
+.scrollbar-handle:hover {
+  background-color: rgba(0, 0, 255, 0.8);
+  box-shadow: 0px 4px 8px rgba(0, 0, 255, 0.4);
+}
+
+.scrollbar-handle:active {
+  background-color: rgba(0, 0, 255, 0.9);
+  box-shadow: 0px 2px 4px rgba(0, 0, 255, 0.35);
+}
+
+/* Custom cursor */
+* {
+  cursor: none !important;
+}
+
+/* Override cursor for specific elements */
+input, textarea, [contenteditable="true"] {
+  cursor: text !important;
+}
+
+.cursor {
+  width: 20px;
+  height: 20px;
+  background: rgba(0, 0, 255, 0.3);
+  border: 2px solid rgba(0, 0, 255, 0.8);
+  border-radius: 50%;
+  position: fixed;
+  pointer-events: none;
+  z-index: 99999;
+  transform: translate(-50%, -50%);
+  transition: transform 0.1s ease;
+  display: block !important;
+  filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.8));
+  box-shadow: 
+    0 0 0 1px rgba(255, 255, 255, 0.3),
+    0 0 0 2px rgba(255, 255, 255, 0.2),
+    0 0 0 3px rgba(255, 255, 255, 0.1);
+}
+
+.cursor.hover {
+  transform: translate(-50%, -50%) scale(1.5);
+  background: rgba(0, 0, 255, 0.2);
+  border: 2px solid rgba(0, 0, 255, 0.6);
+  filter: drop-shadow(0 0 12px rgba(255, 255, 255, 0.9));
+  box-shadow: 
+    0 0 0 1px rgba(255, 255, 255, 0.4),
+    0 0 0 2px rgba(255, 255, 255, 0.3),
+    0 0 0 3px rgba(255, 255, 255, 0.2);
+}
+
+/* Mobile adjustments */
+@media only screen and (max-width: 600px) {
+  .custom-scrollbar {
+    left: 20px;
+    width: 14px;
+    height: 300px;
+  }
+  
+  .scrollbar-handle {
+    height: 60px;
+  }
+}
+
+/* Hide custom cursor on touch devices */
+@media (hover: none) and (pointer: coarse) {
+  * {
+    cursor: auto !important;
+  }
+  .cursor {
+    display: none !important;
+  }
+}
+
+/* Numbers class for numbers */
+.numbers {
+  font-family: 'BookkMyungjoOnlyHangul', serif !important;
+  font-weight: 700;
+  font-style: normal;
+}
+
+/* Test class to verify font loading */
+.test-font {
+  font-family: 'SD Jeongche' !important;
+  font-weight: 400 !important;
+  border: 1px solid red; /* To make it visible */
+}
+
+/* More specific font rules */
+html, body {
+  font-family: 'SD Jeongche', 'EB Garamond', serif !important;
+  font-weight: 400 !important;
+}
+
+body * {
+  font-family: 'SD Jeongche', 'EB Garamond', serif !important;
+  font-weight: 400 !important;
+}
