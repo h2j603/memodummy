@@ -240,7 +240,7 @@ function initializeScrollbar() {
     if (e.target === scrollbar) {
       const scrollbarRect = scrollbar.getBoundingClientRect();
       const handleHeight = handle.offsetHeight;
-      const clickY = e.clientY - scrollbarRect.top;
+      const clickY = (e.clientY || e.touches?.[0]?.clientY) - scrollbarRect.top;
       
       // Calculate new handle position
       let newY = Math.max(0, Math.min(clickY - (handleHeight / 2), scrollbarRect.height - handleHeight));
@@ -253,17 +253,27 @@ function initializeScrollbar() {
     }
   });
 
-  // Handle drag start
-  handle.addEventListener('mousedown', (e) => {
+  // Handle drag start for both mouse and touch
+  const startDrag = (e) => {
     preventDefault(e);
     isDragging = true;
-    startY = e.clientY;
+    const clientY = e.clientY || e.touches?.[0]?.clientY;
+    startY = clientY;
     startHandleY = parseInt(handle.style.top) || 0;
     
     // Add temporary event listeners for drag
-    document.addEventListener('mousemove', handleScrollbarDrag, { passive: false });
-    document.addEventListener('mouseup', handleDragEnd, { passive: false });
-  });
+    if (e.type === 'mousedown') {
+      document.addEventListener('mousemove', handleScrollbarDrag, { passive: false });
+      document.addEventListener('mouseup', handleDragEnd, { passive: false });
+    } else if (e.type === 'touchstart') {
+      document.addEventListener('touchmove', handleScrollbarDrag, { passive: false });
+      document.addEventListener('touchend', handleDragEnd, { passive: false });
+    }
+  };
+
+  // Add both mouse and touch event listeners
+  handle.addEventListener('mousedown', startDrag);
+  handle.addEventListener('touchstart', startDrag);
 
   // Prevent context menu on right-click
   scrollbar.addEventListener('contextmenu', preventDefault);
@@ -278,6 +288,8 @@ function handleDragEnd(e) {
   isDragging = false;
   document.removeEventListener('mousemove', handleScrollbarDrag);
   document.removeEventListener('mouseup', handleDragEnd);
+  document.removeEventListener('touchmove', handleScrollbarDrag);
+  document.removeEventListener('touchend', handleDragEnd);
   return false;
 }
 
@@ -291,8 +303,11 @@ function handleScrollbarDrag(e) {
   const scrollbarRect = scrollbar.getBoundingClientRect();
   const handleHeight = handle.offsetHeight;
   
+  // Get clientY from either mouse or touch event
+  const clientY = e.clientY || e.touches?.[0]?.clientY;
+  
   // Calculate the new handle position using relative movement
-  const deltaY = e.clientY - startY;
+  const deltaY = clientY - startY;
   let newY = Math.max(0, Math.min(startHandleY + deltaY, scrollbarRect.height - handleHeight));
   
   // Update handle position
