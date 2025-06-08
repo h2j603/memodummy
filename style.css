@@ -17,8 +17,11 @@ body {
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  background: #d9d9d9;
-  background: linear-gradient(0deg, rgba(217, 217, 217, 1) 0%, rgba(0, 160, 235, 1) 50%, rgba(217, 217, 217, 1) 100%);
+  background-color: #f0f0f0;
+  background-image: radial-gradient(#ccc 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
   overflow-x: hidden;
 }
 
@@ -130,6 +133,16 @@ h1 {
   width: 92vw;
   height: 92vh;
   line-height: 1.6;
+  overflow: auto;  /* ✅ 스크롤 가능하게 */
+}
+
+#modal-text {
+  max-height: 75vh; /* ✅ 텍스트 영역 높이 제한 */
+  overflow-y: auto;
+  white-space: pre-wrap;
+  line-height: 1.6;
+}
+
 }
 .modal-overlay {
   display: none;
@@ -184,7 +197,8 @@ h1 {
   }
   .modal {
     width: 85vw;
-    height: 75vh;
+    height: 85vh;
+    padding-bottom: 60px;
   }
 }
 #modal-text {
@@ -247,4 +261,3 @@ h1 {
     margin-bottom: 100px;
   }
 }
-
