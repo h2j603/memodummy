@@ -533,20 +533,18 @@ input, textarea, [contenteditable="true"] {
   font-style: normal;
 }
 
-/* Test class to verify font loading */
-.test-font {
-  font-family: 'SD Jeongche' !important;
-  font-weight: 400 !important;
-  border: 1px solid red; /* To make it visible */
-}
-
 /* More specific font rules */
 html, body {
-  font-family: 'SD Jeongche', 'EB Garamond', serif !important;
+  font-family: 'BookkMyungjoOnlyHangul', 'EB Garamond', serif !important;
   font-weight: 400 !important;
 }
 
 body * {
-  font-family: 'SD Jeongche', 'EB Garamond', serif !important;
+  font-family: 'BookkMyungjoOnlyHangul', 'EB Garamond', serif !important;
   font-weight: 400 !important;
+}
+
+/* Remove test class as it's no longer needed */
+.test-font {
+  display: none;
 }
